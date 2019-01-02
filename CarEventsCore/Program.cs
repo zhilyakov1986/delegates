@@ -14,6 +14,7 @@ namespace CarEventsCore
             c1.AboutToBlow += CarAboutToBlow;
             c1.Exploded += CarExploded;
 
+
             Console.WriteLine("***Speeding Up***");
             for (int i = 0; i < 6; i++)
             {
@@ -32,19 +33,29 @@ namespace CarEventsCore
             Console.ReadLine();
         }
 
-        private static void CarExploded(string msg)
+        private static void CarExploded(object sender, CarEventArgs e)
         {
-            Console.WriteLine(msg);
+            if (sender is Car c)
+            {
+                Console.WriteLine($"{sender} says {e.msg}");
+            }
+
         }
 
-        private static void CarIsAlmostDoomed(string msg)
+        private static void CarIsAlmostDoomed(object sender, CarEventArgs e)
         {
-            Console.WriteLine($"=> Critical Message from Car: {msg.ToUpper()}");
+            if (sender is Car c)
+            {
+                Console.WriteLine($"=> Critical Message from {c.PetName}: {e.msg.ToUpper()}");
+            }
         }
 
-        private static void CarAboutToBlow(string msg)
+        private static void CarAboutToBlow(object sender, CarEventArgs e)
         {
-            Console.WriteLine(msg);
+            if (sender is Car c)
+            {
+                Console.WriteLine($"{sender} says {e.msg}");
+            }
         }
     }
 }

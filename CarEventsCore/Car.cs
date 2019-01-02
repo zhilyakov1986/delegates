@@ -2,14 +2,25 @@
 
 namespace CarEventsCore
 {
+
+
+    public class CarEventArgs : EventArgs
+    {
+        public readonly string msg;
+
+        public CarEventArgs(string msg)
+        {
+            this.msg = msg;
+        }
+    }
     internal class Car
     {
         // This delegate works in conjunction with the Car events
-        public delegate void CarEngineHandler(string msg);
+        public delegate void CarEngineHandler(object sender, CarEventArgs e);
 
         // This car sends these events
-        public event CarEngineHandler Exploded;
-        public event CarEngineHandler AboutToBlow;
+        public event EventHandler<CarEventArgs> Exploded;
+        public event EventHandler<CarEventArgs> AboutToBlow;
 
         // Internal state data.
         public int CurrentSpeed { get; set; }
@@ -36,7 +47,7 @@ namespace CarEventsCore
         {
             if (_carIsDead)
             {
-                Exploded?.Invoke("Sorry, this car is dead...");
+                Exploded?.Invoke(this, new CarEventArgs("Sorry, this car is dead..."));
             }
             else
             {
@@ -44,7 +55,7 @@ namespace CarEventsCore
                 // almost dead
                 if (10 == MaxSpeed - CurrentSpeed)
                 {
-                    AboutToBlow?.Invoke("Careful buddy! Gonna blow!");
+                    AboutToBlow?.Invoke(this, new CarEventArgs("Careful buddy! Gonna blow!"));
                 }
                 // still ok!
                 if (CurrentSpeed >= MaxSpeed)
